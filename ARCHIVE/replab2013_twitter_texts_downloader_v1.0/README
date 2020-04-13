@@ -1,0 +1,83 @@
+=========================================================================
+RepLab 2013 Twitter Text Downloader Tool README - v1.0 - April 3rd, 2014
+=========================================================================
+
+
+The TwitterTextsDownloader is a Java program that allows downloading the 
+texts of tweets using HTML requests. 
+
+
+
+1.- How to use:
+
+The tool needs a Java JRE 1.5 or higher installed in 
+the operating system (available at http://www.java.com/download). To run the tool execute: 
+
+	java –Xmx3000m -jar TwitterTextsDownloader.jar inputOption 
+		inputFile outputOption outputFile [--delay]
+		
+The -Xmx java parameter is indicated beacause the tool is a potential memory 
+consumer when the number of tweets is big.
+		
+Valid options are: 
+
+	--help 				Shows the help menu with information about the different options. 
+	--input-folder 		Reads all the files in the input folder and download 
+						the text of each tweet writing the output in the given output
+						parameter. With this option only --output-folder is allowed. 
+						The input format should be the RepLab 2013 tweets_info format. 
+	--input-file 		Reads the specified file and download the text of each tweet 
+						writing the output in the given output parameter (file/folder). The input format 
+						should be the RepLab 2013 tweets_info format. 
+	--output-folder		The folder to write the downloaded texts. 
+	--output-file 		The file to write the downloaded texts. 
+	--delay 			The delay in milliseconds between html requests. Default is 3000.
+	
+The tool includes the resume option at file level. The toool downloads around 500
+tweet in 25 minutes with default delay.
+
+An example:
+
+	java -Xmx3000m -jar TwitterTextsDownloader.jar --input-folder "RepLab2013/training/tweet_info/"	--output-folder "RepLab2013/training/tweet_text/" --delay 1500
+
+2.- RepLab 2013 tweet_info format
+
+Each line in the text file should include the next fields separated by tabs 
+and between quotes. The fields are: 
+
+	"tweet_id": id of the tweet in Twitter. Required. 
+	"author": author of the tweet. Required. 
+	"entity_id": entity of study. Required. 
+	"tweet_url": url of the tweet in Twitter. 
+	"language": automatic identification of the language of the text. 
+	"timestamp": the timestamp when the tweet was written. 
+	"urls": external links in the text of the tweet. 
+	"extended_urls": extended external links. 
+	"md5_extended_urls": md5 to folder with urls downloaded (provided by RepLab 2013). 
+	"is_near_duplicate_of": the id of a similar tweet using a 
+		jaccard similarity, -1 if not. 
+		
+An example: 
+
+	"285786318590578688"	"farchedeaddoll"	"RL2013D01E001" 
+	"https://twitter.com/farchedeaddoll/status/285786318590578688"	"EN"	
+	"1356971742"	"http://yfrog.com/nxk9oyplj"
+	"http://twitter.yfrog.com/nxk9oyplj"	"f948d54ab41e881c5ae589649664a93e"	"-1" 
+
+3.- Output format 
+
+The output of the system is a line containing the next fields seperated by tabs 
+and between quotes: 
+
+	"tweet_id": id of the tweet in Twitter. 
+	"author": author of the tweet. 
+	"entity_id": entity of study. 
+	"text": the text of the tweet downloaded or "" if the tweet was deleted or
+			the user account suspended. 
+			
+An example: 
+
+	"214018413297803264"	"owenmildenhall"	"RL2013D01E002"	"Glad the TV 
+	producer is concentrating on the mega GT battle rather than the Audi 
+	steamroller." 
+

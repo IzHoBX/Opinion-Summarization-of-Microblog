@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Rsrc-Class-Path: ./ jsoup-1.7.2.jar javacsv.jar
+Class-Path: .
+Rsrc-Main-Class: es.uned.nlp.TwitterTextsDownloader
+Main-Class: org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader
