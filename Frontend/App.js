@@ -1,4 +1,4 @@
-simport * as React from 'react';
+import * as React from 'react';
 import { Platform, StatusBar, StyleSheet, View , Component} from 'react-native';
 import { SplashScreen } from 'expo';
 import * as Font from 'expo-font';
