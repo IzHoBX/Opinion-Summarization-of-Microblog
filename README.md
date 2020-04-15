@@ -24,7 +24,7 @@ The directory called `/AwesomeProject` stores the code for front-end, which we b
 ## Back-end
 The directory called `/dataset` contains all codes for the backend. From there, you can see a the following files and directories:
 Filename or directory name| Purpose | Output File that stores the results
----------|--------
+---------|--------|---------
 brexit, election, isis, nobel, note7, spacex | These directories contains texts of twitter posts of the respective topics. Also, they contain files that store intermediate data structures during the pipelined processing. For the descriptions below, we use placeholder `TOPIC` to represent any of these directories. | -
 SentimentClassifier.py | First step of the processing procedures. It classifies twitter posts of each topic into 3 sentiment classes, namely positive, negative and neutral. For the descriptions below, we use placeholder `CLASS` to represent any of the 3 classes. | TOPIC/CLASS.txt
 CorpusToList.py | It reads all the twitter posts in each sentiment class, store them in list and the list is saved in a file. This is necessary to make later steps easier with list indexing. | TOPIC/CLASSlistCorpus
