@@ -1,0 +1,19 @@
+ FRA BOTTOMTABNAVIGATOR:JS
+ 
+ 
+ <BottomTab.Screen
+        /*name="Message"
+        component={MessageScreen}
+        options={{
+          title: 'Messages',
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="ios-chatbubbles" />,
+        }}*/
+      />
+      <BottomTab.Screen /*
+        name="Profile"
+        component={LinksScreen}
+        options={{
+          title: 'Profile',
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="ios-person" />,
+        }}*/
+      />
