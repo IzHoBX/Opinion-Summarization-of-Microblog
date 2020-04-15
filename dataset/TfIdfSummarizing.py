@@ -12,16 +12,18 @@ directories = ["spacex"]
 classes = ("/positive", "/negative", "/neutral")
 
 for directory in directories:
+    corpus = pickle.load(open("./"+directory+"/corpus", "rb"))
+    # inReplyStatusId, userId, numRetweet, numFavourite, text
     for c in classes:
-        clusterToIndicesOfAssignedTweet = pickle.load(open("./" + directory + c + "ClusterToAssignedTweets", "rb"))
-        corpus = pickle.load(open("./" + directory + c + "listCorpus", "rb"))
+        clusterToIdsOfAssignedTweet = pickle.load(open("./" + directory + c + "ClusterToAssignedTweets", "rb"))
         clusterReps = []
-        for cluster in clusterToIndicesOfAssignedTweet:
+        for cluster in clusterToIdsOfAssignedTweet:
             if len(cluster) == 0:
                 continue
             allPosts = []
-            for indexOfTweet in cluster:
-                allPosts.append(corpus[indexOfTweet])
+            print(cluster)
+            for idOfCluster in cluster:
+                allPosts.append(corpus[idOfCluster][4])
 
             v = TfidfVectorizer(stop_words="english")
             X = v.fit_transform(allPosts)
@@ -40,7 +42,7 @@ for directory in directories:
                 normalizing_factor = max(MINIMUM_THRESHOLD, len(allPosts[i].split(' ')))
                 weights.append(score_sum/normalizing_factor)
             rowIndexOfRep = np.argmax(weights)
-            postIndexAtRowIndex = cluster[rowIndexOfRep]
+            postIdAtRowIndex = cluster[rowIndexOfRep]
 
             ''' no need to do similarity measure since we are taking only 1 doc
             # constructing normal tf idf for similarity measure
@@ -55,6 +57,5 @@ for directory in directories:
                         for i in chosen_summary_indices:
                             if cos_mat[index][i] < similarityThreshold:
                                 chosen_summary_indices.append(index)'''
-            clusterReps.append((postIndexAtRowIndex, corpus[postIndexAtRowIndex]))
+            clusterReps.append((postIdAtRowIndex, corpus[postIdAtRowIndex][4]))
         pickle.dump(clusterReps, open("./" + directory + c + "Reps", "wb"))
-        print(clusterReps)

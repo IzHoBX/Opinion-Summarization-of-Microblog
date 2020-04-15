@@ -3,7 +3,8 @@ import requests
 import pickle
 import numpy
 
-directories = ("brexit", "election", "isis", "nobel", "note7")
+#directories = ("brexit", "election", "isis", "nobel", "note7")
+directories = ["spacex"]
 classes = ("/positive.txt", "/negative.txt", "/neutral.txt")
 url = "https://wat.d4science.org/wat/tag/tag"
 params = {}
@@ -12,14 +13,15 @@ params["gcube-token"] = "0fea3a55-cec4-4b2e-8dcc-2b9ccb6ed83c-843339462"
 count = 0
 
 for directory in directories:
+    corpus = pickle.load(open("./"+directory+"/corpus", "rb"))
+    # inReplyStatusId, userId, numRetweet, numFavourite, text
     for c in classes:
-        if directory == "brexit" and (c in ("/positive.txt", "/negative.txt")):
-            continue
         print("doing " + directory + " " + c)
-        f = open("./" + directory + c)
+        listOfStatusId = pickle.load(open("./" + directory+c, "rb"))
         allEntities = []
-        entityIndicesByTweet = []
-        for line in f:
+        entityIndicesByTweet = {}
+        for statusId in listOfStatusId:
+            line = corpus[statusId][4]
             count += 1
             if count % 500 == 0:
                 print(count)
@@ -37,20 +39,19 @@ for directory in directories:
                     else:
                         index = allEntities.index(entity)
                     entityIndices.add(index)
-                entityIndicesByTweet.append(entityIndices)
+                entityIndicesByTweet[statusId] = entityIndices
             except:
                 print("error in line:" + line)
                 print("res: " + str(res))
         matrix = []
         for i in range(0, len(allEntities)):
             matrix.append([0]*len(allEntities))
-        for entityIndicesOfSingleTweet in entityIndicesByTweet:
+        for statusId, entityIndicesOfSingleTweet in entityIndicesByTweet.items():
             for i1 in entityIndicesOfSingleTweet:
                 for i2 in entityIndicesOfSingleTweet:
                     if i1 != i2:
-                        matrix[i1][i2] += 1
+                        matrix[i1][i2] += 1 +  2 * corpus[statusId][2] + corpus[statusId][3]
         pickle.dump([allEntities, entityIndicesByTweet, numpy.array(matrix)], open( "./"+directory+(c[:-4]), "wb"))
-        f.close()
 
 ''' note about results:
 there are empty (or unicode incompatible lines in brexit (neutral) and election (neutral)). This will cause the

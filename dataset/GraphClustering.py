@@ -2,7 +2,7 @@ import sknetwork.clustering as sc
 import pickle
 
 # directories = ("spacex", "brexit", "election", "isis", "nobel", "note7")
-directories = ("isis", "nobel", "note7")
+directories = ["spacex"]
 classes = ("/positive", "/negative", "/neutral")
 l = sc.Louvain()
 

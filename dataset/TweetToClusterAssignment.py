@@ -3,7 +3,7 @@ import requests
 import urllib
 
 # directories = ("spacex", "brexit", "election", "isis", "nobel", "note7")
-directories = ("isis", "nobel", "note7")
+directories = ["spacex"]
 classes = ("/positive", "/negative", "/neutral")
 
 url = "https://wat.d4science.org/wat/relatedness/graph"
@@ -25,8 +25,11 @@ scoreCache = {}
 
 
 for directory in directories:
+    corpus = pickle.load(open("./"+directory+"/corpus", "rb"))
+    # inReplyStatusId, userId, numRetweet, numFavourite, text
     for c in classes:
         meta = pickle.load(open("./" + directory + c + "ClusteredWG", "rb"))
+        replyGraph = pickle.load(open("./" + directory+c+"ReplyGraph", "rb"))
         # [allEntities, entityIndicesByTweet, numpy.array(matrix), listsOfNodesBelongingToTheSameCluster]
 
         clusterToIndicesOfAssignedTweet = []
@@ -57,8 +60,7 @@ for directory in directories:
             scoreCache[(id1, id2)] = score
         print("done with pairwise relatedness")
 
-        for i in range(0, len(meta[1])):
-            setOfIndicesOfEntitiesOfATweet = meta[1][i]
+        for statusId, setOfIndicesOfEntitiesOfATweet in meta[1].items():
             for j in range(0, len(meta[3])):
                 setOfIndicesOfEntitiesOfACluster = meta[3][j]
                 sum = 0
@@ -92,8 +94,10 @@ for directory in directories:
                 else:
                     sum /= denom
                 if sum > 0.001:
-                    clusterToIndicesOfAssignedTweet[j].append(i)
-        print(clusterToIndicesOfAssignedTweet)
+                    clusterToIndicesOfAssignedTweet[j].append(statusId)
+                    if statusId in replyGraph:
+                        for s in replyGraph[statusId]:
+                            clusterToIndicesOfAssignedTweet[j].append(s)
         pickle.dump(clusterToIndicesOfAssignedTweet, open("./" + directory + c + "ClusterToAssignedTweets", "wb"))
 
 pickle.dump(titleToId, open("./cache", "wb"))

@@ -144,11 +144,12 @@ class MyHandler(BaseHTTPRequestHandler):
                     indicesOfAssignedClusters.append(j)
 
             clusterToIndicesOfAssignedTweet = pickle.load(open("./" + state +"/"+ c + "ClusterToAssignedTweets", "rb"))
-            corpus = pickle.load(open("./" + state +"/"+ c + "listCorpus", "rb"))
+            corpus = pickle.load(open("./"+state+"/corpus", "rb"))
+            # inReplyStatusId, userId, numRetweet, numFavourite, text
             related = []
             for i in indicesOfAssignedClusters:
                 for j in clusterToIndicesOfAssignedTweet[i]:
-                    related.append(corpus[j])
+                    related.append(corpus[j][4])
 
             x = json.dumps({"res":x+related})
         else:
@@ -178,6 +179,8 @@ def prepareForTopic(topic):
     global negative
     global neutral
     global all
+    corpus = pickle.load(open("./"+state+"/corpus", "rb"))
+    # inReplyStatusId, userId, numRetweet, numFavourite, text
     positive = set()
     negative = set()
     neutral = set()
@@ -200,18 +203,15 @@ def prepareForTopic(topic):
     for index, post in l:
         negative.add(post)
     negative = list(negative)
-    f = open("./" + topic + "/positive.txt")
-    for line in f:
-        all.append(line)
-    f.close()
-    f = open("./" + topic + "/negative.txt")
-    for line in f:
-        all.append(line)
-    f.close()
-    f = open("./" + topic + "/neutral.txt")
-    for line in f:
-        all.append(line)
-    f.close()
+    f = pickle.load(open("./" + topic + "/positive.txt", "rb"))
+    for id in f:
+        all.append(corpus[id][4])
+    f = pickle.load(open("./" + topic + "/negative.txt", "rb"))
+    for id in f:
+        all.append(corpus[id][4])
+    f = pickle.load(open("./" + topic + "/neutral.txt", "rb"))
+    for id in f:
+        all.append(corpus[id][4])
     random.shuffle(all)
 
 prepareForTopic("spacex")

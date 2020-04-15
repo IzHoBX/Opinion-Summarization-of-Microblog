@@ -1,29 +1,47 @@
 import os
 from textblob import TextBlob
+import pickle
 
-directories = ("brexit", "election", "isis", "nobel", "note7", "spacex")
+#directories = ("brexit", "election", "isis", "nobel", "note7", "spacex")
+directories = ["spacex"]
 
 for directory in directories:
-    pos = open(directory + "/positive.txt", "w")
-    neg = open(directory + "/negative.txt", "w")
-    neu = open(directory + "/neutral.txt", "w")
-    for subdir in os.listdir("./" + directory):
-        if subdir == "positive.txt" or subdir == "neutral.txt" or subdir == "negative.txt" or subdir == ".DS_Store":
+    pos = []
+    neg = []
+    neu = []
+    f = open("./"+directory+"/"+directory)
+    data = f.read()
+    eachPostLine = data.split("\t")
+    corpus = {}
+    for line in eachPostLine:
+        if line == "":
             continue
-        for filename in os.listdir("./"+directory+"/"+subdir):
-            f = open("./"+directory+"/"+subdir+"/"+filename)
-            for line in f:
-                result = TextBlob(line).sentiment.polarity
-                if result < -0.05:
-                    neg.write(line)
-                elif result > 0.05:
-                    pos.write(line)
-                else:
-                    neu.write(line)
-            f.close()
-
-pos.close()
-neg.close()
-neu.close()
+        fields = line.split("|||")
+        # statusId, inReplyStatusId, userId, numRetweet, numFavourite, text
+        linedata = []
+        statusId = int(fields[0])
+        inReplyStatusId = int(fields[1])
+        linedata.append(inReplyStatusId)
+        userId = fields[2]
+        linedata.append(userId)
+        numRetweet = int(fields[3])
+        linedata.append(numRetweet)
+        numFavourite = int(fields[4])
+        linedata.append(numFavourite)
+        text = fields[5]
+        linedata.append(text)
+        result = TextBlob(text).sentiment.polarity
+        if result < -0.05:
+            neg.append(statusId)
+        elif result > 0.05:
+            pos.append(statusId)
+        else:
+            neu.append(statusId)
+        corpus[statusId] = linedata
+    f.close()
+    pickle.dump(corpus, open("./"+directory+"/corpus", "wb"))
+    pickle.dump(pos, open("./" + directory + "/positive.txt", "wb"))
+    pickle.dump(neg, open("./" + directory + "/negative.txt", "wb"))
+    pickle.dump(neu, open("./" + directory + "/neutral.txt", "wb"))
 
 # http://wis.ewi.tudelft.nl/websci11
