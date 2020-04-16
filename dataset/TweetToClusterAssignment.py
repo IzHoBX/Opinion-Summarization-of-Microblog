@@ -3,7 +3,7 @@ import requests
 import urllib
 
 # directories = ("spacex", "brexit", "election", "isis", "nobel", "note7")
-directories = ["spacex"]
+directories = ["election"]
 classes = ("/positive", "/negative", "/neutral")
 
 url = "https://wat.d4science.org/wat/relatedness/graph"

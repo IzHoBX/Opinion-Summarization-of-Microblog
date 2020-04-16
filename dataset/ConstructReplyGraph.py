@@ -1,6 +1,6 @@
 import pickle
 
-directories = ["spacex"]
+directories = ("isis", "nobel", "note7")
 classes = ("/positive", "/negative", "/neutral")
 
 count = 0

@@ -2,8 +2,7 @@ import os
 from textblob import TextBlob
 import pickle
 
-#directories = ("brexit", "election", "isis", "nobel", "note7", "spacex")
-directories = ["spacex"]
+directories = ("isis", "nobel", "note7")
 
 for directory in directories:
     pos = []

@@ -121,8 +121,8 @@ public class DataReader {
     }
 
 	public static void main(String[] args) throws ClassNotFoundException, IOException{
-		String path = "/Users/hobingxuan/Downloads/summarization-tsix-master/raw/spacex";
-		String outPath = "/Users/hobingxuan/Downloads/spacex";
+		String path = "./raw/note7";
+		String outPath = "/Users/hobingxuan/Downloads/note7";
 
 		File outFile = new File(outPath);
 		FileWriter fr = new FileWriter(outFile);

@@ -25,6 +25,7 @@ class MyHandler(BaseHTTPRequestHandler):
         global state
         if SET in self.path and self.path.index(SET) == 0:
             state = self.path[len(SET):]
+            print("setting: " + state)
             prepareForTopic(state)
             self.send_response(200)
             self.send_header('Content-type', 'application/json')

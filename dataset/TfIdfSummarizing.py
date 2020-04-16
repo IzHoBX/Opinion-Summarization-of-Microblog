@@ -8,20 +8,20 @@ import pickle
 import string
 
 # directories = ("spacex", "brexit", "election", "isis", "nobel", "note7")
-directories = ["spacex"]
+directories = ("isis", "nobel", "note7")
 classes = ("/positive", "/negative", "/neutral")
 
 for directory in directories:
     corpus = pickle.load(open("./"+directory+"/corpus", "rb"))
     # inReplyStatusId, userId, numRetweet, numFavourite, text
     for c in classes:
+        print("doing " + directory + " " + c)
         clusterToIdsOfAssignedTweet = pickle.load(open("./" + directory + c + "ClusterToAssignedTweets", "rb"))
         clusterReps = []
         for cluster in clusterToIdsOfAssignedTweet:
             if len(cluster) == 0:
                 continue
             allPosts = []
-            print(cluster)
             for idOfCluster in cluster:
                 allPosts.append(corpus[idOfCluster][4])
 
