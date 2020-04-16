@@ -1,11 +1,12 @@
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
-import { Image, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View, Dimensions, Container } from 'react-native';
+import { Image, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View, Dimensions, Container, Button } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import DropdownMenu from 'react-native';
 
 import { MonoText } from '../components/StyledText';
 import Posts from "../Posts.js"
+import TabBarIcon from '../components/TabBarIcon';
 
 
 export default function HomeScreen({ navigation }) {
@@ -31,11 +32,7 @@ export default function HomeScreen({ navigation }) {
   return (
     <View style={styles.container} id="demo">
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-        <View style = {{
-              flex: 1,
-              justifyContent: 'center',
-              flexDirection: 'row'
-           }}>
+        <View style = {styles.sentimentContainer}>
           <TouchableOpacity style ={styles.positiveButton} onPress={()=> {
             console.log("positive")
             var Httpreq = new XMLHttpRequest(); // a new request
@@ -44,7 +41,13 @@ export default function HomeScreen({ navigation }) {
             var res = JSON.parse(Httpreq.responseText)["res"];
             setState({posts:res})
             }}>
-            <Text style={styles.buttonText}> Positive</Text>
+            <Image
+            source={__DEV__
+                ? require('../assets/images/happy.png')
+                : require('../assets/images/happy.png')
+            }
+            style={styles.welcomeImage}
+          />
           </TouchableOpacity>
           <TouchableOpacity style ={styles.neutralButton} onPress={()=>{
             console.log("neutral")
@@ -54,7 +57,13 @@ export default function HomeScreen({ navigation }) {
             var res = JSON.parse(Httpreq.responseText)["res"];
             setState({posts:res})
             }}>
-            <Text style={styles.buttonText}> Neutral</Text>
+              <Image
+            source={__DEV__
+                ? require('../assets/images/face-to-face-icon-70.png')
+                : require('../assets/images/face-to-face-icon-70.png')
+            }
+            style={styles.welcomeImage}
+            />
           </TouchableOpacity>
           <TouchableOpacity style ={styles.negativeButton} onPress={()=> {
             console.log("negative")
@@ -64,9 +73,16 @@ export default function HomeScreen({ navigation }) {
             var res = JSON.parse(Httpreq.responseText)["res"];
             setState({posts:res})
             }}>
-            <Text style={styles.buttonText}> Negative</Text>
+              <Image
+            source={__DEV__
+                ? require('../assets/images/sad-face.png')
+                : require('../assets/images/sad-face.png')
+            }
+            style={styles.welcomeImage}
+          />
           </TouchableOpacity>
-          <TouchableOpacity style ={styles.allButton} onPress={()=>{
+        </View>
+        <TouchableOpacity style ={styles.allButton} onPress={()=>{
             console.log("all")
             var Httpreq = new XMLHttpRequest(); // a new request
             Httpreq.open("GET","http://localhost:7777/all",false);
@@ -74,82 +90,34 @@ export default function HomeScreen({ navigation }) {
             var res = JSON.parse(Httpreq.responseText)["res"];
             setState({posts:res})
             }}>
-            <Text style={styles.buttonText}> All</Text>
+            <Button title = "Show All" color="#003f5c"/>
           </TouchableOpacity>
-        </View>
-        <View style={styles.welcomeContainer}>
-          <Image
-            source={
-              __DEV__
-                ? require('../assets/images/chat2.png')
-                : require('../assets/images/chat2.png')
-            }
-            style={styles.welcomeImage}
-          />
-
-        </View>
         <View style={styles.getStartedContainer}>
-
-          <Text style={styles.getStartedText}>Welcome</Text>
-
           <Posts posts={state.posts}/>
-
         </View>
         </ScrollView>
     </View>
   );
 }
 
-function DevelopmentModeNotice() {
-  if (__DEV__) {
-    const learnMoreButton = (
-      <Text onPress={handleLearnMorePress} style={styles.helpLinkText}>
-        Learn more
-      </Text>
-    );
-
-    return (
-      <Text style={styles.developmentModeText}>
-        Development mode is enabled: your app will be slower but you can use useful development
-        tools. {learnMoreButton}
-      </Text>
-    );
-  } else {
-    return (
-      <Text style={styles.developmentModeText}>
-        You are not in development mode: your app will run at full speed.
-      </Text>
-    );
-  }
-}
-
-function handleLearnMorePress() {
-  WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/workflow/development-mode/');
-}
-
-function handleHelpPress() {
-  WebBrowser.openBrowserAsync(
-    'https://docs.expo.io/versions/latest/get-started/create-a-new-app/#making-your-first-change'
-  );
-}
-
 const data = ["neutral", "positive", "negative"]
 
 const styles = StyleSheet.create({
-  positiveButton: {
-    backgroundColor: 'green',
+  sentimentContainer: {
+    flex: 1,
+    marginBottom: 15,
+    justifyContent: 'center',
+    flexDirection: 'row'
   },
   neutralButton: {
-    backgroundColor: 'grey',
     marginLeft: 15
   },
   negativeButton: {
-    backgroundColor: 'red',
     marginLeft: 15
   },
   allButton: {
-    backgroundColor: 'yellow',
-    marginLeft: 15
+    flexDirection: 'row',
+    justifyContent: 'center'
   },
   buttonText: {
     fontSize: 17,
@@ -159,7 +127,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#F0F0F0',
   },
   developmentModeText: {
     marginBottom: 20,
@@ -184,6 +152,7 @@ const styles = StyleSheet.create({
     marginLeft: -10,
   },
   getStartedContainer: {
+    color: 'rgb(16,16,16)',
     alignItems: 'center',
   },
   getStartedText: {

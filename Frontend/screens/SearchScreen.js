@@ -14,11 +14,35 @@ export default function SearchScreen({navigation}) {
       value="Search"
     />
     <TouchableOpacity style ={styles.box} onPress={()=>{
+      var Httpreq = new XMLHttpRequest(); // a new request
+      Httpreq.open("GET","http://localhost:7777/SET?spacex",false);
+      Httpreq.send(null);
       navigation.navigate("Home")
     }}><Text style={styles.getStartedText}> SpaceX</Text></TouchableOpacity>
-    <TouchableOpacity style ={styles.box}><Text style={styles.getStartedText}> Nobel Prize</Text></TouchableOpacity>
-    <TouchableOpacity style ={styles.box}><Text style={styles.getStartedText}> Note 7</Text></TouchableOpacity>
-    <TouchableOpacity style ={styles.box}><Text style={styles.getStartedText}> ISIS</Text></TouchableOpacity>
+    <TouchableOpacity style ={styles.box} onPress={()=>{
+      var Httpreq = new XMLHttpRequest(); // a new request
+      Httpreq.open("GET","http://localhost:7777/SET?brexit",false);
+      Httpreq.send(null);
+      navigation.navigate("Home")
+    }}><Text style={styles.getStartedText}> Brexit</Text></TouchableOpacity>
+    <TouchableOpacity style ={styles.box} onPress={()=>{
+      var Httpreq = new XMLHttpRequest(); // a new request
+      Httpreq.open("GET","http://localhost:7777/SET?nobel",false);
+      Httpreq.send(null);
+      navigation.navigate("Home")
+    }}><Text style={styles.getStartedText}> Nobel Prize</Text></TouchableOpacity>
+    <TouchableOpacity style ={styles.box} onPress={()=>{
+      var Httpreq = new XMLHttpRequest(); // a new request
+      Httpreq.open("GET","http://localhost:7777/SET?note7",false);
+      Httpreq.send(null);
+      navigation.navigate("Home")
+    }}><Text style={styles.getStartedText}> Note 7</Text></TouchableOpacity>
+    <TouchableOpacity style ={styles.box} onPress={()=>{
+      var Httpreq = new XMLHttpRequest(); // a new request
+      Httpreq.open("GET","http://localhost:7777/SET?isis",false);
+      Httpreq.send(null);
+      navigation.navigate("Home")
+    }}><Text style={styles.getStartedText}> ISIS</Text></TouchableOpacity>
     </View>
   )
 
